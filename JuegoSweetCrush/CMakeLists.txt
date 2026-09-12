@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(JuegoSweetCrush main.cpp
     tablero.h
-    juego.h)
+    tablero.cpp)
 
 include(GNUInstallDirs)
 install(TARGETS JuegoSweetCrush
