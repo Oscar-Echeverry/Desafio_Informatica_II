@@ -276,3 +276,323 @@ int pedirPosicion(int filas, int columnas)
     return fila * columnas + columna;
 }
 
+void guardarNuevoTablero(unsigned char*& tablero,
+                         unsigned char* nuevoTablero,
+                         int nuevasFilas,
+                         int nuevasColumnas,
+                         int& bytesAsignados,
+                         bool eliminar)
+{
+    int bytesNecesarios =
+        calcularBytes(nuevasFilas, nuevasColumnas);
+
+    bool cambiarMemoria = false;
+
+    if (bytesNecesarios > bytesAsignados)
+    {
+        cambiarMemoria = true;
+    }
+    else if (eliminar)
+    {
+        int bitsUtilizados =
+            nuevasFilas * nuevasColumnas * 3;
+
+        int bitsReservados =
+            bytesAsignados * 8;
+
+        double utilizacion =
+            (bitsUtilizados * 100.0) / bitsReservados;
+
+        if (utilizacion < 65.0)
+            cambiarMemoria = true;
+    }
+
+    if (cambiarMemoria)
+    {
+        delete[] tablero;
+
+        tablero =
+            new unsigned char[bytesNecesarios];
+
+        for (int i = 0; i < bytesNecesarios; i++)
+            tablero[i] = nuevoTablero[i];
+
+        bytesAsignados = bytesNecesarios;
+    }
+    else
+    {
+        for (int i = 0; i < bytesAsignados; i++)
+            tablero[i] = 0;
+
+        for (int i = 0; i < bytesNecesarios; i++)
+            tablero[i] = nuevoTablero[i];
+    }
+
+    delete[] nuevoTablero;
+}
+
+void agregarFila(unsigned char*& tablero,
+                 int& filas,
+                 int columnas,
+                 int posicionFila,
+                 int& bytesAsignados)
+{
+    int nuevasFilas = filas + 1;
+
+    unsigned char* nuevoTablero =
+        crearTablero(nuevasFilas, columnas);
+
+    for (int fila = 0; fila < nuevasFilas; fila++)
+    {
+        if (fila == posicionFila)
+        {
+            for (int columna = 0; columna < columnas; columna++)
+            {
+                int posicion =
+                    fila * columnas + columna;
+
+                ponerFicha(
+                    nuevoTablero,
+                    posicion,
+                    rand() % 6 + 1
+                    );
+            }
+        }
+        else
+        {
+            int filaVieja;
+
+            if (fila < posicionFila)
+                filaVieja = fila;
+            else
+                filaVieja = fila - 1;
+
+            for (int columna = 0;
+                 columna < columnas;
+                 columna++)
+            {
+                int posicionVieja =
+                    filaVieja * columnas + columna;
+
+                int posicionNueva =
+                    fila * columnas + columna;
+
+                int ficha =
+                    obtenerFicha(
+                        tablero,
+                        posicionVieja
+                        );
+
+                ponerFicha(
+                    nuevoTablero,
+                    posicionNueva,
+                    ficha
+                    );
+            }
+        }
+    }
+
+    guardarNuevoTablero(
+        tablero,
+        nuevoTablero,
+        nuevasFilas,
+        columnas,
+        bytesAsignados,
+        false
+        );
+
+    filas = nuevasFilas;
+}
+
+void eliminarFila(unsigned char*& tablero,
+                  int& filas,
+                  int columnas,
+                  int posicionFila,
+                  int& bytesAsignados)
+{
+    if (filas <= 1)
+        return;
+
+    int nuevasFilas = filas - 1;
+
+    unsigned char* nuevoTablero =
+        crearTablero(nuevasFilas, columnas);
+
+    for (int fila = 0; fila < filas; fila++)
+    {
+        if (fila == posicionFila)
+            continue;
+
+        int nuevaFila;
+
+        if (fila < posicionFila)
+            nuevaFila = fila;
+        else
+            nuevaFila = fila - 1;
+
+        for (int columna = 0;
+             columna < columnas;
+             columna++)
+        {
+            int posicionVieja =
+                fila * columnas + columna;
+
+            int posicionNueva =
+                nuevaFila * columnas + columna;
+
+            int ficha =
+                obtenerFicha(
+                    tablero,
+                    posicionVieja
+                    );
+
+            ponerFicha(
+                nuevoTablero,
+                posicionNueva,
+                ficha
+                );
+        }
+    }
+
+    guardarNuevoTablero(
+        tablero,
+        nuevoTablero,
+        nuevasFilas,
+        columnas,
+        bytesAsignados,
+        true
+        );
+
+    filas = nuevasFilas;
+}
+
+void agregarColumna(unsigned char*& tablero,
+                    int filas,
+                    int& columnas,
+                    int posicionColumna,
+                    int& bytesAsignados)
+{
+    int nuevasColumnas = columnas + 1;
+
+    unsigned char* nuevoTablero =
+        crearTablero(filas, nuevasColumnas);
+
+    for (int fila = 0; fila < filas; fila++)
+    {
+        for (int columna = 0;
+             columna < nuevasColumnas;
+             columna++)
+        {
+            int posicionNueva =
+                fila * nuevasColumnas + columna;
+
+            if (columna == posicionColumna)
+            {
+                ponerFicha(
+                    nuevoTablero,
+                    posicionNueva,
+                    rand() % 6 + 1
+                    );
+            }
+            else
+            {
+                int columnaVieja;
+
+                if (columna < posicionColumna)
+                    columnaVieja = columna;
+                else
+                    columnaVieja = columna - 1;
+
+                int posicionVieja =
+                    fila * columnas + columnaVieja;
+
+                int ficha =
+                    obtenerFicha(
+                        tablero,
+                        posicionVieja
+                        );
+
+                ponerFicha(
+                    nuevoTablero,
+                    posicionNueva,
+                    ficha
+                    );
+            }
+        }
+    }
+
+    guardarNuevoTablero(
+        tablero,
+        nuevoTablero,
+        filas,
+        nuevasColumnas,
+        bytesAsignados,
+        false
+        );
+
+    columnas = nuevasColumnas;
+}
+
+void eliminarColumna(unsigned char*& tablero,
+                     int filas,
+                     int& columnas,
+                     int posicionColumna,
+                     int& bytesAsignados)
+{
+    if (columnas <= 1)
+        return;
+
+    int nuevasColumnas = columnas - 1;
+
+    unsigned char* nuevoTablero =
+        crearTablero(filas, nuevasColumnas);
+
+    for (int fila = 0; fila < filas; fila++)
+    {
+        for (int columna = 0;
+             columna < columnas;
+             columna++)
+        {
+            if (columna == posicionColumna)
+                continue;
+
+            int nuevaColumna;
+
+            if (columna < posicionColumna)
+                nuevaColumna = columna;
+            else
+                nuevaColumna = columna - 1;
+
+            int posicionVieja =
+                fila * columnas + columna;
+
+            int posicionNueva =
+                fila * nuevasColumnas
+                + nuevaColumna;
+
+            int ficha =
+                obtenerFicha(
+                    tablero,
+                    posicionVieja
+                    );
+
+            ponerFicha(
+                nuevoTablero,
+                posicionNueva,
+                ficha
+                );
+        }
+    }
+
+    guardarNuevoTablero(
+        tablero,
+        nuevoTablero,
+        filas,
+        nuevasColumnas,
+        bytesAsignados,
+        true
+        );
+
+    columnas = nuevasColumnas;
+}
+
