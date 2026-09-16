@@ -1,4 +1,4 @@
-include <iostream>
+#include <iostream>
 #include "tablero.h"
 
     using namespace std;
@@ -104,7 +104,7 @@ void mostrarTablero(unsigned char* tablero, int filas, int columnas)
         for (int columna = 0; columna < columnas; columna++)
         {
             int posicion = fila * columnas + columna;
-            cout << obtenerFciha(tablero, posicion) << " ";
+            cout << obtenerFicha(tablero, posicion) << " ";
         }
         cout << endl;
     }
