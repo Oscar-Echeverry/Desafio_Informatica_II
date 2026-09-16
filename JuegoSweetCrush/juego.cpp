@@ -163,7 +163,7 @@ void aplicarGravedad(unsigned char* tablero,
     }
 }
 
-void generarNuevosFichas(unsigned char* tablero,
+void generarNuevasFichas(unsigned char* tablero,
                          int filas,
                          int columnas)
 {
@@ -222,7 +222,7 @@ int procesarCascadas(unsigned char* tablero,
                 );
 
             aplicarGravedad(tablero, filas, columnas);
-            generarNuevosFichas(tablero, filas, columnas);
+            generarNuevasFichas(tablero, filas, columnas);
 
             totalEliminados += cantidadEliminados;
             totalCombinaciones += combinaciones;

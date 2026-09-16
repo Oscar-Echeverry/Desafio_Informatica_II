@@ -322,6 +322,9 @@ int main()
 
     cout << endl;
     cout << "Programa finalizado." << endl;
+    cout << "==================================" << endl;
+    cout << "          Luna and Oscar" << endl;
+    cout << "==================================" << endl;
 
     return 0;
 }
