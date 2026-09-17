@@ -107,9 +107,17 @@ void mostrarTablero(unsigned char* tablero, int filas, int columnas)
             int ficha = obtenerFicha(tablero, posicion);
 
             if (ficha == 0)
-                cout << ". ";
+            {
+                cout << "V ";
+            }
+            else if (ficha == 7)
+            {
+                cout << "R ";
+            }
             else
+            {
                 cout << char('A' + ficha - 1) << " ";
+            }
         }
 
         cout << endl;
