@@ -106,19 +106,45 @@ int main()
                 ponerFicha(
                     tablero,
                     posicion,
+                    7
+                    );
+
+                cout << endl;
+                cout << "Ficha seleccionada (R = Reservada):"
+                     << endl;
+
+                mostrarTablero(
+                    tablero,
+                    filas,
+                    columnas
+                    );
+                ponerFicha(
+                    tablero,
+                    posicion,
                     0
                     );
 
                 eliminacionesUsuario++;
 
+                cout << endl;
+                cout << "Ficha eliminada (V = Vacio):"
+                     << endl;
+
+                mostrarTablero(
+                    tablero,
+                    filas,
+                    columnas
+                    );
                 aplicarGravedad(
-                    tablero, filas, columnas
+                    tablero,
+                    filas,
+                    columnas
                     );
-
                 generarNuevasFichas(
-                    tablero, filas, columnas
+                    tablero,
+                    filas,
+                    columnas
                     );
-
                 int cascadas =
                     procesarCascadas(
                         tablero,
@@ -131,11 +157,22 @@ int main()
 
                 totalCascadas += cascadas;
 
+                cout << endl;
                 cout << "Jugada realizada."
                      << endl;
 
                 cout << "Cascadas generadas: "
                      << cascadas << endl;
+
+                cout << endl;
+                cout << "Tablero despues de la jugada:"
+                     << endl;
+
+                mostrarTablero(
+                    tablero,
+                    filas,
+                    columnas
+                    );
             }
         }
         else if (opcion == 3)
