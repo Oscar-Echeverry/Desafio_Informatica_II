@@ -104,12 +104,17 @@ void mostrarTablero(unsigned char* tablero, int filas, int columnas)
         for (int columna = 0; columna < columnas; columna++)
         {
             int posicion = fila * columnas + columna;
-            cout << obtenerFicha(tablero, posicion) << " ";
+            int ficha = obtenerFicha(tablero, posicion);
+
+            if (ficha == 0)
+                cout << ". ";
+            else
+                cout << char('A' + ficha - 1) << " ";
         }
+
         cout << endl;
     }
 }
-
 void mostrarBits(unsigned char* tablero, int filas, int columnas)
 {
     int bytes = calcularBytes(filas, columnas);
