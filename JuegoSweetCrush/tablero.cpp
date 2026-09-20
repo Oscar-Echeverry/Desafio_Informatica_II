@@ -1,7 +1,7 @@
 #include <iostream>
 #include "tablero.h"
 
-    using namespace std;
+using namespace std;
 
 int calcularBytes(int filas, int columnas)
 {
